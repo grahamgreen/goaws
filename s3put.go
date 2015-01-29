@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -16,13 +15,18 @@ func main() {
 	auth, err := aws.EnvAuth()
 	goutils.Check(err)
 
+	//TODO check the len of the args
+
 	bucket_name := os.Getenv("AWS_BUCKET")
 	goutils.NotEmpty(bucket_name)
 	file_name := os.Args[1]
 	goutils.NotEmpty(file_name)
 
-	log.Print(file_name)
-	log.Print(bucket_name)
+	path := os.Args[2]
+	path = goutils.DefaultIfEmpty(path, "NeedAName.sad")
+
+	//log.Print(file_name)
+	//log.Print(bucket_name)
 
 	file, err := os.Open(file_name)
 	goutils.Check(err)
@@ -40,7 +44,6 @@ func main() {
 
 	client := s3.New(auth, aws.USEast)
 	bucket := client.Bucket(bucket_name)
-	path := "testing.test"
 
 	err = bucket.Put(path, bytes, filetype, s3.ACL("public-read"))
 	goutils.Check(err)
