@@ -16,6 +16,7 @@ func main() {
 	goutils.Check(err)
 
 	//TODO check the len of the args
+	//TODO use multi-put for faster upload
 
 	bucket_name := os.Getenv("AWS_BUCKET")
 	goutils.NotEmpty(bucket_name)
